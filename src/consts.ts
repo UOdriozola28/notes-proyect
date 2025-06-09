@@ -1,9 +1,9 @@
 
 export const LABELS = {
-  URGENT: 'Urgente',
-  INSPIRATION: 'Inspiración',
+  URGENT: 'Urgent',
+  INSPIRATION: 'Inspiration',
   PERSONAL: 'Personal',
-  CODING: 'Programación'
+  CODING: 'Coding'
 } as const
 
 export const initialNotes = [
