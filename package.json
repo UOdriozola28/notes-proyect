@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource-variable/geologica": "^5.2.6",
+    "@formkit/auto-animate": "0.8.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },

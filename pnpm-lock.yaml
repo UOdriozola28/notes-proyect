@@ -8,6 +8,12 @@ importers:
 
   .:
     dependencies:
+      '@fontsource-variable/geologica':
+        specifier: ^5.2.6
+        version: 5.2.6
+      '@formkit/auto-animate':
+        specifier: 0.8.2
+        version: 0.8.2
       react:
         specifier: ^19.1.0
         version: 19.1.0
@@ -238,6 +244,12 @@ packages:
   '@eslint/plugin-kit@0.3.1':
     resolution: {integrity: sha512-0J+zgWxHN+xXONWIyPWKFMgVuJoZuGiIFu8yxk7RJjxkzpGmyja5wRFqZIVtjDVOQpV+Rw0iOAjYPE2eQyjr0w==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@fontsource-variable/geologica@5.2.6':
+    resolution: {integrity: sha512-5HKefEIEKzLBUwEwdgmM37Qb3sifr+X5JvXS7JJf7fe18XOkgVdFOqKYm8uBZrys8bbjCSGTsc5lH5dejD+wBA==}
+
+  '@formkit/auto-animate@0.8.2':
+    resolution: {integrity: sha512-SwPWfeRa5veb1hOIBMdzI+73te5puUBHmqqaF1Bu7FjvxlYSz/kJcZKSa9Cg60zL0uRNeJL2SbRxV6Jp6Q1nFQ==}
 
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
@@ -1126,6 +1138,10 @@ snapshots:
     dependencies:
       '@eslint/core': 0.14.0
       levn: 0.4.1
+
+  '@fontsource-variable/geologica@5.2.6': {}
+
+  '@formkit/auto-animate@0.8.2': {}
 
   '@humanfs/core@0.19.1': {}
 
