@@ -1,26 +1,47 @@
-import { useRef, useState } from "react"
-import type { NoteId, Notes } from "../types"
+import { useEffect, useRef, useState } from "react"
+import type { Note, NoteId, Notes } from "../types"
+import { Trash2 } from "lucide-react"
 import "./Notes.css"
 
-export default function Notes({ notes }: Notes) {
+interface Props {
+  notes: Note[]
+  deleteNote: ({ id }: NoteId) => void
+}
+
+export default function Notes({ notes, deleteNote }: Props) {
 
   const previusIdNote = useRef<string>(null)
   const [note, setNote] = useState({
+    id: '',
     comment: '',
     label: ''
   })
 
-  const handleClickNote = ({ id }: NoteId): void => {
+  const handleClickNote = ({ id }: NoteId) => (e: React.MouseEvent<HTMLElement>): void => {
+    const element = e.target as HTMLElement
 
     if (previusIdNote.current === id) return
+    if (element.tagName === 'BUTTON') return
 
-    const comment = notes.find(note => note.id === id)
-    if (!comment) return
+    const note = notes.find(note => note.id === id)
+    if (!note) return
     setNote({
-      comment: comment.comment,
-      label: comment.label
+      id: note.id,
+      comment: note.comment,
+      label: note.label
     })
     previusIdNote.current = id
+  }
+
+  const handleDeleteNote = ({ id }: NoteId) => {
+    if (previusIdNote.current === id) {
+      setNote({
+        id: '',
+        comment: '',
+        label: ''
+      })
+    }
+    deleteNote({ id })
   }
 
   return (
@@ -28,9 +49,12 @@ export default function Notes({ notes }: Notes) {
       <ul className="notes-list">
         <h4>Notes</h4>
         {notes.map(item => (
-          <li key={item.id} className="note-card" onClick={() => handleClickNote({ id: item.id })}>
+          <li key={item.id} className="note-card" onClick={handleClickNote({ id: item.id })}>
             <p className="note-comment">{item.comment}</p>
-            <span className="note-label">{item.label}</span>
+            <span className="note-label">{item.label}</span> <br />
+            <button className="delete-note" onClick={() => handleDeleteNote({ id: item.id })}>
+              <Trash2 size={16} />
+            </button>
           </li>
         ))}
       </ul>

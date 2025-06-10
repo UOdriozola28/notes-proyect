@@ -50,3 +50,7 @@
 .category {
   text-align: left;
 }
+
+.delete-note {
+  margin-top: 14px;
+}
