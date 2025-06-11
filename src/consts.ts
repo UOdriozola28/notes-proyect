@@ -1,3 +1,4 @@
+import type { Notes } from "./types"
 
 export const LABELS = {
   URGENT: 'Urgent',
@@ -27,4 +28,4 @@ export const initialNotes = [
     comment: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minus aliquam voluptate odio similique. Necessitatibus, consectetur tempora! Debitis delectus blanditiis quod eveniet sequi molestiae neque deleniti eum, voluptates dolor, velit maxime.',
     label: LABELS.URGENT
   },
-]
+] as Notes

@@ -1,26 +1,15 @@
-import { useState } from "react";
-import { initialNotes } from "../consts";
-import type { Note, NoteCommentLabel, NoteId } from "../types";
+import { useContext } from "react";
+import { NoteContext } from "../context/note";
 
-export default function useNote() {
+export const useNote = () => {
 
-  const [notes, setNotes] = useState<Note[]>(initialNotes)
+  const context = useContext(NoteContext);
 
-  const handleSaveNotes = ({ comment, label }: NoteCommentLabel) => {
-    setNotes(prev => [
-      ...prev,
-      {
-        id: crypto.randomUUID(),
-        comment,
-        label
-      }
-    ])
+  if (!context) {
+    throw new Error("useNote must be used within a NoteProvider");
   }
 
-  const handleDeleteNote = ({ id }: NoteId): void => {
-    const newNotes = notes.filter(note => note.id !== id)
-    setNotes(newNotes)
-  }
+  const { notes, handleSaveNotes, handleDeleteNote, handleShowNote } = context;
 
-  return { notes, setNotes, handleSaveNotes, handleDeleteNote }
+  return { notes, handleSaveNotes, handleDeleteNote, handleShowNote }
 }

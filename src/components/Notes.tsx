@@ -1,14 +1,15 @@
-import { useEffect, useRef, useState } from "react"
-import type { Note, NoteId, Notes } from "../types"
+import { useRef, useState } from "react"
+import type { MouseEventHtmlElement, Note, NoteFuntion, Notes as NotesProp } from "../types"
 import { Trash2 } from "lucide-react"
 import "./Notes.css"
 
 interface Props {
-  notes: Note[]
-  deleteNote: ({ id }: NoteId) => void
+  notes: NotesProp
+  onShowNote: ({ id, previusIdNote, handleSetNote }: NoteFuntion, e: MouseEventHtmlElement) => void
+  deleteNote: ({ id, previusIdNote, handleSetNote }: NoteFuntion) => void
 }
 
-export default function Notes({ notes, deleteNote }: Props) {
+export default function Notes({ notes, deleteNote, onShowNote }: Props) {
 
   const previusIdNote = useRef<string>(null)
   const [note, setNote] = useState({
@@ -17,46 +18,35 @@ export default function Notes({ notes, deleteNote }: Props) {
     label: ''
   })
 
-  const handleClickNote = ({ id }: NoteId) => (e: React.MouseEvent<HTMLElement>): void => {
-    const element = e.target as HTMLElement
-
-    if (previusIdNote.current === id) return
-    if (element.tagName === 'BUTTON') return
-
-    const note = notes.find(note => note.id === id)
-    if (!note) return
+  const handleSetNote = ({ id, comment, label }: Note) => {
     setNote({
-      id: note.id,
-      comment: note.comment,
-      label: note.label
+      id: id,
+      comment: comment,
+      label: label
     })
-    previusIdNote.current = id
   }
 
-  const handleDeleteNote = ({ id }: NoteId) => {
-    if (previusIdNote.current === id) {
-      setNote({
-        id: '',
-        comment: '',
-        label: ''
-      })
-    }
-    deleteNote({ id })
-  }
+  const hasNotes = notes?.length > 0
 
   return (
     <main className="main-note">
       <ul className="notes-list">
         <h4>Notes</h4>
-        {notes.map(item => (
-          <li key={item.id} className="note-card" onClick={handleClickNote({ id: item.id })}>
-            <p className="note-comment">{item.comment}</p>
-            <span className="note-label">{item.label}</span> <br />
-            <button className="delete-note" onClick={() => handleDeleteNote({ id: item.id })}>
-              <Trash2 size={16} />
-            </button>
-          </li>
-        ))}
+        {
+          hasNotes ? notes.map(item => (
+            <li key={item.id}
+              className="note-card"
+              onClick={(e) => onShowNote({ id: item.id, previusIdNote, handleSetNote }, e)}
+            >
+              <p className="note-comment">{item.comment}</p>
+              <span className="note-label">{item.label}</span> <br />
+              <button className="delete-note"
+                onClick={() => deleteNote({ id: item.id, previusIdNote, handleSetNote })}>
+                <Trash2 size={16} />
+              </button>
+            </li>
+          )) : 'No Notes found'
+        }
       </ul>
       <div>
         <h3>My Note</h3>
