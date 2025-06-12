@@ -9,7 +9,7 @@ export const useNote = () => {
     throw new Error("useNote must be used within a NoteProvider");
   }
 
-  const { notes, handleSaveNotes, handleDeleteNote, handleShowNote } = context;
+  const { notes, loading, handleSaveNotes, handleDeleteNote, handleShowNote } = context;
 
-  return { notes, handleSaveNotes, handleDeleteNote, handleShowNote }
+  return { notes, loading, handleSaveNotes, handleDeleteNote, handleShowNote }
 }

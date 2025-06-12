@@ -3,6 +3,7 @@ import type { NoteCommentLabel, NoteFuntion, Notes } from "../types";
 
 interface Props {
   notes: Notes
+  loading: boolean;
   handleSaveNotes: ({ comment, label }: NoteCommentLabel) => void;
   handleDeleteNote: ({ id, previusIdNote, handleSetNote }: NoteFuntion) => void;
   handleShowNote: ({ id, previusIdNote, handleSetNote }: NoteFuntion) => void;

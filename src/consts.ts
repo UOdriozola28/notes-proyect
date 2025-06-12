@@ -1,5 +1,8 @@
 import type { Notes } from "./types"
 
+export const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL
+export const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY
+
 export const LABELS = {
   URGENT: 'Urgent',
   INSPIRATION: 'Inspiration',
