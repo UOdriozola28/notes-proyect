@@ -1,11 +1,11 @@
 import { useRef, useState } from "react"
-import type { MouseEventHtmlElement, Note, NoteFuntion, Notes as NotesProp } from "../types"
+import type { Note, NoteFuntion, Notes as NotesProp } from "../types"
 import { Trash2 } from "lucide-react"
 import "./Notes.css"
 
 interface Props {
   notes: NotesProp
-  onShowNote: ({ id, previusIdNote, handleSetNote }: NoteFuntion, e: MouseEventHtmlElement) => void
+  onShowNote: ({ id, previusIdNote, handleSetNote }: NoteFuntion) => void
   deleteNote: ({ id, previusIdNote, handleSetNote }: NoteFuntion) => void
 }
 
@@ -36,12 +36,15 @@ export default function Notes({ notes, deleteNote, onShowNote }: Props) {
           hasNotes ? notes.map(item => (
             <li key={item.id}
               className="note-card"
-              onClick={(e) => onShowNote({ id: item.id, previusIdNote, handleSetNote }, e)}
+              onClick={() => onShowNote({ id: item.id, previusIdNote, handleSetNote })}
             >
               <p className="note-comment">{item.comment}</p>
               <span className="note-label">{item.label}</span> <br />
               <button className="delete-note"
-                onClick={() => deleteNote({ id: item.id, previusIdNote, handleSetNote })}>
+                onClick={(e) => {
+                  e.stopPropagation()
+                  deleteNote({ id: item.id, previusIdNote, handleSetNote })
+                }}>
                 <Trash2 size={16} />
               </button>
             </li>

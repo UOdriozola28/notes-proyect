@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { MouseEventHtmlElement, NoteCommentLabel, NoteFuntion, Notes } from "../types";
+import type { NoteCommentLabel, NoteFuntion, Notes } from "../types";
 import { initialNotes } from "../consts";
 import { NoteContext } from "../context/note";
 
@@ -22,11 +22,9 @@ export function NoteProvider({ children }: Props) {
     ])
   }
 
-  const handleShowNote = ({ id, previusIdNote, handleSetNote }: NoteFuntion, e: MouseEventHtmlElement): void => {
-    const element = e.target as HTMLElement
+  const handleShowNote = ({ id, previusIdNote, handleSetNote }: NoteFuntion): void => {
 
     if (previusIdNote.current === id) return
-    if (element.tagName === 'BUTTON') return
 
     const note = notes.find(note => note.id === id)
     if (!note) return
@@ -44,8 +42,7 @@ export function NoteProvider({ children }: Props) {
       })
     }
 
-    const newNotes = notes.filter(note => note.id !== id)
-    setNotes(newNotes)
+    setNotes(prev => prev.filter(item => item.id !== id))
   }
 
   return (
