@@ -64,14 +64,6 @@ export function NoteProvider({ children }: Props) {
 
   const handleDeleteNote = async ({ id, previusIdNote, handleSetNote }: NoteFuntion): Promise<void> => {
 
-    if (previusIdNote.current === id) {
-      handleSetNote({
-        id: '',
-        comment: '',
-        label: ''
-      })
-    }
-
     const { error } = await supabase.from("notes")
       .delete()
       .eq("id", id)
@@ -81,6 +73,13 @@ export function NoteProvider({ children }: Props) {
       return
     }
 
+    if (previusIdNote.current === id) {
+      handleSetNote({
+        id: '',
+        comment: '',
+        label: ''
+      })
+    }
     setNotes(prev => prev.filter(item => item.id !== id))
   }
 
