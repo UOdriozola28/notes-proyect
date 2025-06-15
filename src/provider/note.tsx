@@ -62,7 +62,9 @@ export function NoteProvider({ children }: Props) {
     previusIdNote.current = id
   }
 
-  const handleDeleteNote = async ({ id, previusIdNote, handleSetNote }: NoteFuntion): Promise<void> => {
+  const handleDeleteNote = ({ id, previusIdNote, handleSetNote }: NoteFuntion) => async (e: React.MouseEvent<HTMLElement>): Promise<void> => {
+
+    e.stopPropagation()
 
     const { error } = await supabase.from("notes")
       .delete()

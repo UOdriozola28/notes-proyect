@@ -1,12 +1,12 @@
 import { useRef, useState } from "react"
-import type { Note, NoteFuntion, Notes as NotesProp } from "../types"
+import type { MouseEventHtmlElement, Note, NoteFuntion, Notes as NotesProp } from "../types"
 import { Trash2 } from "lucide-react"
 import "./Notes.css"
 
 interface Props {
   notes: NotesProp
   onShowNote: ({ id, previusIdNote, handleSetNote }: NoteFuntion) => () => void
-  deleteNote: ({ id, previusIdNote, handleSetNote }: NoteFuntion) => Promise<void>
+  deleteNote: ({ id, previusIdNote, handleSetNote }: NoteFuntion) => (e: MouseEventHtmlElement) => Promise<void>
 }
 
 export default function Notes({ notes, deleteNote, onShowNote }: Props) {
@@ -41,10 +41,7 @@ export default function Notes({ notes, deleteNote, onShowNote }: Props) {
               <p className="note-comment">{item.comment}</p>
               <span className="note-label">{item.label}</span> <br />
               <button className="delete-note"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  deleteNote({ id: item.id, previusIdNote, handleSetNote })
-                }}>
+                onClick={deleteNote({ id: item.id, previusIdNote, handleSetNote })}>
                 <Trash2 size={16} />
               </button>
             </li>
