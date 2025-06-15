@@ -6,7 +6,7 @@ import "./Notes.css"
 interface Props {
   notes: NotesProp
   onShowNote: ({ id, previusIdNote, handleSetNote }: NoteFuntion) => () => void
-  deleteNote: ({ id, previusIdNote, handleSetNote }: NoteFuntion) => () => void
+  deleteNote: ({ id, previusIdNote, handleSetNote }: NoteFuntion) => Promise<void>
 }
 
 export default function Notes({ notes, deleteNote, onShowNote }: Props) {
@@ -41,7 +41,10 @@ export default function Notes({ notes, deleteNote, onShowNote }: Props) {
               <p className="note-comment">{item.comment}</p>
               <span className="note-label">{item.label}</span> <br />
               <button className="delete-note"
-                onClick={deleteNote({ id: item.id, previusIdNote, handleSetNote })}>
+                onClick={(e) => {
+                  e.stopPropagation()
+                  deleteNote({ id: item.id, previusIdNote, handleSetNote })
+                }}>
                 <Trash2 size={16} />
               </button>
             </li>

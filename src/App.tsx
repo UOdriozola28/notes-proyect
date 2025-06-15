@@ -5,13 +5,16 @@ import Notes from './components/Notes'
 import { useNote } from './hooks/useNote'
 
 function App() {
-  const { notes, handleSaveNotes, handleDeleteNote, handleShowNote } = useNote()
+  const { notes, loading, handleSaveNotes, handleDeleteNote, handleShowNote } = useNote()
 
   return (
     <>
       <Header saveNote={handleSaveNotes} />
-      <Notes notes={notes} deleteNote={handleDeleteNote} onShowNote={handleShowNote} />
-      {/* <Footer /> */}
+      {
+        loading
+          ? <p>Loading...</p>
+          : <Notes notes={notes} deleteNote={handleDeleteNote} onShowNote={handleShowNote} />
+      }
     </>
   )
 }

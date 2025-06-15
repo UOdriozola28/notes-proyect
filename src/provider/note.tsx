@@ -1,7 +1,7 @@
-import { useState } from "react";
-import type { MouseEventHtmlElement, NoteCommentLabel, NoteFuntion, Notes } from "../types";
-import { initialNotes } from "../consts";
+import { useEffect, useState } from "react";
+import type { NoteCommentLabel, NoteFuntion, Notes } from "../types";
 import { NoteContext } from "../context/note";
+import { supabase } from "../lib/supabase";
 
 interface Props {
   children: React.ReactNode;
@@ -9,24 +9,52 @@ interface Props {
 
 export function NoteProvider({ children }: Props) {
 
-  const [notes, setNotes] = useState<Notes>(initialNotes)
+  const [notes, setNotes] = useState<Notes>([])
+  const [loading, setLoading] = useState<boolean>(true)
 
-  const handleSaveNotes = ({ comment, label }: NoteCommentLabel) => {
+  useEffect(() => {
+    async function fetchNotes() {
+      setLoading(true)
+      const { data, error } = await supabase.from("notes").select("*")
+
+      if (error) {
+        console.error("Error fetching notes:", error)
+        return
+      }
+
+      setNotes(data)
+      setLoading(false)
+    }
+
+    fetchNotes()
+  }, [])
+
+  const handleSaveNotes = async ({ comment, label }: NoteCommentLabel): Promise<void> => {
+
+    const newNote = {
+      id: crypto.randomUUID(),
+      comment,
+      label
+    }
+
+    const { error } = await supabase
+      .from("notes")
+      .insert([newNote])
+
+    if (error) {
+      console.error("Error saving note:", error)
+      return
+    }
+
     setNotes(prev => [
       ...prev,
-      {
-        id: crypto.randomUUID(),
-        comment,
-        label
-      }
+      newNote
     ])
   }
 
-  const handleShowNote = ({ id, previusIdNote, handleSetNote }: NoteFuntion) => (e: MouseEventHtmlElement) => {
-    const element = e.target as HTMLElement
+  const handleShowNote = ({ id, previusIdNote, handleSetNote }: NoteFuntion) => () => {
 
     if (previusIdNote.current === id) return
-    if (element.tagName === 'BUTTON') return
 
     const note = notes.find(note => note.id === id)
     if (!note) return
@@ -34,7 +62,16 @@ export function NoteProvider({ children }: Props) {
     previusIdNote.current = id
   }
 
-  const handleDeleteNote = ({ id, previusIdNote, handleSetNote }: NoteFuntion) => (): void => {
+  const handleDeleteNote = async ({ id, previusIdNote, handleSetNote }: NoteFuntion): Promise<void> => {
+
+    const { error } = await supabase.from("notes")
+      .delete()
+      .eq("id", id)
+
+    if (error) {
+      console.error("Error deleting note:", error)
+      return
+    }
 
     if (previusIdNote.current === id) {
       handleSetNote({
@@ -43,14 +80,13 @@ export function NoteProvider({ children }: Props) {
         label: ''
       })
     }
-
-    const newNotes = notes.filter(note => note.id !== id)
-    setNotes(newNotes)
+    setNotes(prev => prev.filter(item => item.id !== id))
   }
 
   return (
     <NoteContext.Provider value={{
       notes,
+      loading,
       handleSaveNotes,
       handleDeleteNote,
       handleShowNote
