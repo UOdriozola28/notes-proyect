@@ -22,7 +22,7 @@ export function NoteProvider({ children }: Props) {
     ])
   }
 
-  const handleShowNote = ({ id, previusIdNote, handleSetNote }: NoteFuntion, e: MouseEventHtmlElement): void => {
+  const handleShowNote = ({ id, previusIdNote, handleSetNote }: NoteFuntion) => (e: MouseEventHtmlElement) => {
     const element = e.target as HTMLElement
 
     if (previusIdNote.current === id) return
@@ -34,7 +34,7 @@ export function NoteProvider({ children }: Props) {
     previusIdNote.current = id
   }
 
-  const handleDeleteNote = ({ id, previusIdNote, handleSetNote }: NoteFuntion): void => {
+  const handleDeleteNote = ({ id, previusIdNote, handleSetNote }: NoteFuntion) => (): void => {
 
     if (previusIdNote.current === id) {
       handleSetNote({
